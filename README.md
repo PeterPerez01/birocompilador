@@ -40,8 +40,7 @@ Restricciones:
 Antes de instalar y ejecutar este proyecto, asegúrate de tener instaladas las siguientes herramientas:
 
 - Java [La última versión disponible] <pre><code> https://www.java.com/es/download/ </code></pre>
-- Descarga la versión lista para correr del compilador (clic derecho > guardar enlace como...)
-<pre><code> https://github.com/PeterPerez01/birocompilador/blob/main/Compilador.jar </code></pre>
+- Descarga la versión lista para correr del compilador (clic derecho > guardar enlace como...) <pre><code> https://github.com/PeterPerez01/birocompilador/blob/main/Compilador.jar </code></pre>
 
 
 ## Apoyar
