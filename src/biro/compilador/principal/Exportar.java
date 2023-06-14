@@ -23,6 +23,7 @@ public class Exportar {
 		StringBuilder sb = new StringBuilder();
 		int i=0;
 		for (String line : lines) {
+			line.replace(";", "");
 			if (!line.startsWith("//") && !line.contains("/*")) {
 				sb.append(line + "\n");
 			}
@@ -65,12 +66,14 @@ public class Exportar {
 		Pattern patternString = Pattern.compile("^\".*\"");
 		Pattern patternEntero = Pattern.compile("^[+-]?\\d+$");
 		Pattern patternReal = Pattern.compile("^[+-]?\\d+\\.\\d+$");
-		Pattern patternFunction = Pattern.compile("(\\*cad|\\*ent|\\*dec)\\s+([a-zA-Z]\\w*)\\s*\\(\\s*(\\*cad|\\*ent|\\*dec)\\s+\\.(\\w*[A-Za-z]\\w*)\\s*(,\\s*(\\*cad|\\*ent|\\*dec)\\s+\\.(\\w*[A-Za-z]\\w*)\\s*)*\\)\\s*\\{");
-
+		Pattern functionDeclarationPattern = Pattern.compile("function\\s+(\\*\\w+)\\s+(\\.\\w+)\\s*\\((.*?)\\)\\s*\\{");
 
 
 		for (String word : words) {
-		    Matcher matcherCad = patternCad.matcher(word);
+		    
+			word.replace(",", "").replace(";", "");
+			
+			Matcher matcherCad = patternCad.matcher(word);
 		    Matcher matcherDec = patternDec.matcher(word);
 		    Matcher matcherEnt = patternEnt.matcher(word);
 		    Matcher matcherId = patternId.matcher(word);
@@ -88,7 +91,34 @@ public class Exportar {
 		    Matcher matcherAbreP = patternParentesis.matcher(word);
 		    
 		    
-		    Matcher matcherFuncion = patternFunction.matcher(word);
+		    Matcher matcherFuncion = functionDeclarationPattern.matcher(word);
+		    
+		    if(word.endsWith(";")) {
+		    	word = word.substring(0, word.length() - 1);
+		    	double result=0;
+		    	try {
+		    		result = Double.parseDouble(word);
+		    	} catch(Exception exc) {
+		    	}
+		    	
+		    	if(result==0) {
+		    		currentType="*cad";
+		    	} else if ((""+result).endsWith("0")) {
+		    		currentType="*ent";
+		    	} else {
+		    		currentType="*dec";
+		    	}
+		    	
+		        token = "CONS";
+		        dataList.add(new Data(word, currentType, token));
+		        if(puntocoma==false) {
+		        dataList.add(new Data(";","Separador","SEP"));
+		        puntocoma=true;
+		        }
+		        continue;
+		    }
+		    
+		    
 		    
 
 		    if (matcherCad.find()) {
@@ -165,7 +195,7 @@ public class Exportar {
 		    } else if (matcherColon.find()) {
 		    	if(coma==false) {
 		        sepcounter++;
-		        dataList.add(new Data("\",\"", "Separador", "'SEP"+sepcounter));
+		        dataList.add(new Data("\"',\"", "Separador", "'SEP"+sepcounter));
 		        coma=true;
 		        }
 		    }else if (matcherString.find()) {
@@ -211,8 +241,6 @@ public class Exportar {
 	    	//quite los sysout porque en el ejecutable no se van a ver jaja - josue
 	    }
 	}
-	
-	
 
 	public List<Data> getList(){
 		return dataList;

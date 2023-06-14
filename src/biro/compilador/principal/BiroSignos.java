@@ -13,7 +13,7 @@ public class BiroSignos {
 	    StyleConstants.setBold(keyword, true);
 	  }
 
-  public void señalizar() {
+  public void senalizar() {
 	  String[] keywords = {"=", "/", "+", "-", "&&", "||", ";", "%"};
 	    String content = textPane.getText();
 	    StyledDocument doc = (StyledDocument) textPane.getDocument();

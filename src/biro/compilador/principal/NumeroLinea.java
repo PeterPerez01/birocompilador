@@ -159,6 +159,7 @@ public class NumeroLinea extends JPanel
 	}
 
 
+	@SuppressWarnings("all")
 	@Override
 	public void paintComponent(Graphics g)
 	{
@@ -173,9 +174,7 @@ public class NumeroLinea extends JPanel
 		//  Determine the rows to draw within the clipped bounds.
 
 		Rectangle clip = g.getClipBounds();
-		@SuppressWarnings("deprecation")
 		int rowStartOffset = component.viewToModel( new Point(0, clip.y) );
-		@SuppressWarnings("deprecation")
 		int endOffset = component.viewToModel( new Point(0, clip.y + clip.height) );
 
 		while (rowStartOffset <= endOffset)
@@ -246,12 +245,12 @@ public class NumeroLinea extends JPanel
 	/*
 	 *  Determine the Y offset for the current row
 	 */
+	@SuppressWarnings("all")
 	private int getOffsetY(int rowStartOffset, FontMetrics fontMetrics)
 		throws BadLocationException
 	{
 		//  Get the bounding rectangle of the row
 
-		@SuppressWarnings("deprecation")
 		Rectangle r = component.modelToView( rowStartOffset );
 		int lineHeight = fontMetrics.getHeight();
 		int y = r.y + r.height;
@@ -350,13 +349,13 @@ public class NumeroLinea extends JPanel
 
 		SwingUtilities.invokeLater(new Runnable()
 		{
+			@SuppressWarnings("all")
 			@Override
 			public void run()
 			{
 				try
 				{
 					int endPos = component.getDocument().getLength();
-					@SuppressWarnings("deprecation")
 					Rectangle rect = component.modelToView(endPos);
 
 					if (rect != null && rect.y != lastHeight)
